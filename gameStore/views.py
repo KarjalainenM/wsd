@@ -267,7 +267,7 @@ def index(request):
     elif request.user.is_authenticated():
         return redirect(my_games)
     else:
-        return redirect(browse_games)
+        return render(request, 'index.html')
 
 
 @login_required
