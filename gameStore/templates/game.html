@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block title %} Play {{ game.name }}{% endblock %}
+{% block content %}
+    {% csrf_token %}
+        <!-- Page Content -->
+    <br><br>
+    <div class="intro-header">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-10 col-md-offset-1">
+
+                <div class="thumbnail">
+                    {% if bought_game or developed_game %}
+                        <iframe id="game" src="{{ game.URL }}" style="width: 87%; height: 620px;"></iframe>
+                    {% else %}
+                        <img class="img-responsive" src="{{ game.image }}" />
+                    {% endif %}
+                    <div class="caption-full">
+                        <h3>{{ game.name }}</h3>
+                        <h6>Price: ${{ game.price }}</h6>
+                        <h6>Developer: {{ game.developer }}</h6>
+                        <p>{{ game.description }}</p>
+                            {% if bought_game != True and is_developer != True %}
+                                <h5><a class="btn btn-lg btn-primary"  href="{% url 'payment_form' game.pk %}">Buy</a></h5>
+                            {% endif %}
+                            {% if developed_game %}
+                                {% url 'edit_game' game.pk as edit_url %}
+                                <h5><a class="btn btn-lg btn-primary" href="{{ edit_url }}">Edit game.</a></h5>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        newScore = function(score, game){
+            var someData = {'score': score, 'game': game,
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()};
+            var ajaxPost = $.ajax({
+                type: "POST",
+                url:"/highscores/newScore/",
+                data: someData,
+                success: function(){
+                    return true;
+                }
+            })
+        };
+        loadGame = function(game){
+            var someData = {'game': game,
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()};
+            var ajaxPost = $.ajax({
+                type: "GET",
+                url:"/games/load/",
+                data: someData,
+                success: function(data){
+                    var fixed_data = JSON.parse(data);
+                    if (fixed_data['found'] == 1) {
+                        var message = {
+                            messageType: "LOAD",
+                            gameState: JSON.parse(fixed_data['state'])
+                        };
+                        document.getElementById('game').contentWindow.postMessage(message, "{{ game.URL }}");
+                    } else {
+                        sendError("Couldn't load game, no savegames found from the database")
+                    }
+                }
+            })
+        };
+        setGame = function(options){
+            $("#game").width(options['width']).height(options['height']);
+        };
+        saveGame = function(state, game){
+            var gameState = JSON.stringify(state);
+            var someData = {'state': gameState, 'game': game,
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val() };
+            var ajaxPost = $.ajax({
+                type: "POST",
+                url:"/games/save/",
+                data: someData,
+                success: function(){
+
+                }
+            });
+        };
+        sendError = function(error){
+            var message =  {
+                messageType: "ERROR",
+                info: error
+            };
+            document.getElementById('game').contentWindow.postMessage(message, "{{ game.URL }}")
+        };
+        messageHandler = function(e) {
+            switch(e.data['messageType']) {
+                case 'SCORE':
+                    newScore(e.data['score'], "{{ game.name }}");
+                    break;
+                case 'SAVE':
+                    saveGame(e.data['gameState'], "{{ game.name }}");
+                    break;
+                case 'SETTING':
+                    setGame(e.data['options']);
+                    break;
+                case 'LOAD_REQUEST':
+                    loadGame("{{ game.name }}");
+                    break;
+            }
+        };
+        window.addEventListener("message", function(event){
+            messageHandler(event)}, false
+        );
+    </script>
+{% endblock %}

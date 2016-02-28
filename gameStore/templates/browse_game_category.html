@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Browse {{ tcategory.name }} games{% endblock %}
+{% block content %}
+    <div class="intro-header">
+        <h1>Browse {{ category }} games</h1>
+        <hr class="intro-divider"><br>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            {% for game in games.all %}
+                    <div class="col-sm-4 col-lg-4 col-md-4" onclick="location.href='{% url "game" game_id=game.pk %}'">
+                        <div class="thumbnail">
+                            <img src="{{ game.image }}" alt="">
+                            <div class="caption">
+                                <h4 class="pull-right">${{ game.price }}</h4>
+                                <h4><a href="#">{{ game.name }}</a>
+                                </h4>
+                                <p>{{ game.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- /.container -->
+
+{% endblock %}

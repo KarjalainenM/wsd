@@ -1,0 +1,14 @@
+defusedxml==0.4.1
+dj-database-url==0.4.0
+Django==1.9.1
+django-allauth==0.24.1
+gunicorn==19.4.5
+oauthlib==1.0.3
+python3-openid==3.0.9
+requests==2.9.1
+requests-oauthlib==0.6.1
+wheel==0.24.0
+whitenoise==2.0.6
+dj-static==0.0.6
+psycopg2==2.6
+static3==0.5.1

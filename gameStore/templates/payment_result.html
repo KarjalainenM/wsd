@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %} Bought a game! {% endblock %}
+{% block content %}
+        <div class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h4>
+                            {% if success %}
+                                <h3>Congrats, you just bought a game!</h3>
+                                <br>
+                                <h3>Click <a href="{% url 'my_games' %}">here</a> to go back to your collection.</h3>
+                            {% else %}
+                                <h3>Purchase could not be completed!</h3>
+                            {% endif %}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.intro-header -->
+
+{% endblock %}

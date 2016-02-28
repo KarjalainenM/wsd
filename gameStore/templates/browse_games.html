@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block title %}Browse Games{% endblock %}
+{% block content %}
+    <div class="intro-header">
+        <h1>Browse games</h1>
+        <hr class="intro-divider"><br>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p class="lead">Categories</p>
+                <div class="list-group">
+                    {% for category in categories %}
+                        <a class="list-group-item" href="{% url 'browse_game_category' category.name %}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-9">
+                <p class="lead">Featured games</p>
+                <div class="row carousel-holder">
+                    <div class="col-md-12">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <a href='#'>
+                                        <img onclick="location.href='{% url "game" game_id=cheapest.pk %}'"
+                                             class="slide-image" src="{{ cheapest.image }}" alt="">
+                                    </a>
+                                </div>
+                                {% for game in recent %}
+                                    <div class="item">
+                                        <img onclick="location.href='{% url "game" game_id=game.pk %}'"
+                                             class="slide-image" src="{{ game.image }}" alt="">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="lead">All games</p>
+                    {% for game in games %}
+                    <div class="col-sm-4 col-lg-4 col-md-4" onclick="location.href='{% url "game" game_id=game.pk %}'">
+                        <div class="thumbnail thumbnail-item">
+                            <img src="{{ game.image }}" alt="">
+                            <div class="caption">
+                                <h4>{{ game.name }}</h4>
+                                <p>{{ game.description }}</p>
+                                <h4 class="">${{ game.price }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+    </div>
+
+{% endblock %}

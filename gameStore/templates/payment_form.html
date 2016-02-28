@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %} Payment {% endblock %}
+{% block content %}
+{% url 'payment_redirect' game.pk as redir_url %}
+            <!-- Header -->
+    <div class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h4>Click <a href="{{ redir_url }}">here</a> to buy {{ game.name }} for ${{ game.price }}.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.intro-header -->
+
+
+
+{% endblock %}

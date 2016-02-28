@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %} Delete {{ bject.name }}{% endblock %}
+{% block content %}
+
+<div class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <form action="" method="post">{% csrf_token %}
+                        <p>Are you sure you want to delete "{{ object }}"?</p>
+                        <input type="submit" value="Confirm" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.intro-header -->
+
+{% endblock %}

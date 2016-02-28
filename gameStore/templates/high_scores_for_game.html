@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %} High scores for {{ game.name }}{% endblock %}
+{% block content %}
+    <div class="intro-header">
+        <h1>TOP25 high scores for {{ game.name }}:</h1>
+        <hr class="intro-divider"><br>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+                <div class="col-md-8 col-md-offset-2"
+                     >
+                    <div class="thumbnail thumbnail-item">
+                        <img src="{{ game.image }}" alt="">
+                        <div class="caption highscore">
+                            <h4>{{ game.name }}</h4>
+                            <hr class="intro-divider">
+                            {% for high_score in high_scores %}
+                                    <h5>{{ forloop.counter }} . {{ high_score.user.username }} - {{ high_score.score }}</h5>
+                        {% endfor %}
+                        </div>
+
+
+                    </div>
+                </div>
+        </div>
+    </div>
+    </div>
+    <!-- /.container -->
+
+{% endblock %}

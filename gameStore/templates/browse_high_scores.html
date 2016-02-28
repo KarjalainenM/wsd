@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Browse Games{% endblock %}
+{% block content %}
+        <div class="intro-header">
+        <h1>Browse high scores:</h1>
+        <hr class="intro-divider"><br>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            {% for game in games.all %}
+                <div class="col-sm-3"
+                     onclick="location.href='{% url 'high_scores_for_game' game_id=game.pk %}'">
+                    <div class="thumbnail thumbnail-item">
+                        <img src="{{ game.image }}" alt="">
+                        <div class="caption highscores">
+                            <h4>{{ game.name }}</h4>
+                                {% for high_score in high_scores %}
+                                    {% if high_score.game_id == game.pk %}
+                                        <h5>{{ forloop.counter }} . {{ high_score.user.username }} - {{ high_score.score }}</h5>
+                                    {% endif %}
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+    <!-- /.container -->
+{% endblock %}

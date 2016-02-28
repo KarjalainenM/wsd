@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <div class="intro-header">
+        <h1>Dashboard</h1>
+        <hr class="intro-divider"><br>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-1">
+            <h4>Statistics</h4><br>
+                How many games bought
+                 How much money I have made
+                Tämä vois olla vain ylhäällä koko sivun levyinen. Ei välttämättä tarvi omaa
+                columnia. Joku hieno graafi vielä tähän.
+        </div>
+    <div class="col-md-3">
+        <h4 class="">Transactions</h4><br>
+     <table class="table table-bordered table-hover table-striped">
+         <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Game</th>
+                <th>Amount</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for transaction in transactions.all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ transaction.created_at }}</td>
+                    <td>{{ transaction.game }}</td>
+                    <td>{{ transaction.price }}</td>
+                </tr>
+            {% endfor %}
+
+         </tbody>
+     </table>
+    </div>
+    <div class="col-md-3">
+        <h4>My Games</h4><br>
+            <div>
+                <h5><a class="btn btn-lg btn-primary btn-block" href="{% url 'create_game' %}">Add a new game</a></h5><br>
+                {% for game in games.all %}
+                        <div class="thumbnail thumbnail-item" onclick="location.href='{% url "game" game_id=game.pk %}'">
+                            <div class="caption">
+                                <h4>{{ game.name }}</h4>
+                                <p>{{ game.description }}</p>
+                            </div>
+                        </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
